@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Regression Suite">
+    <test name="tstProjects">
+        <classes>
+            <class name="TestSpecs.samsung_tv_test_specifications">
+
+            </class> <!-- TestSpecs.userLoginTests -->
+        </classes>
+    </test> <!-- tstProjects -->
+</suite> <!-- Default Suite -->
