@@ -10,7 +10,7 @@ import java.awt.*;
 public class samsung_tv_test_specifications extends Controller {
 
     /**
-     *
+     * Test Manager
      */
     @Test(enabled = true, priority = 0)
     public void verify_about_this_item_on_product_detail_page(){
