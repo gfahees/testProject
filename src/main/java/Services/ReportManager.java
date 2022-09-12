@@ -61,26 +61,17 @@ public class ReportManager {
         htmlReporter.config().setDocumentTitle("Amazon.in Automation Report");
         htmlReporter.config().setReportName("Regression cycle");
         htmlReporter.config().setProtocol(Protocol.HTTP);
-        //htmlReporter.config().setTheme(Theme.DARK);
-        //htmlReporter.setAppendExisting(true);
         return htmlReporter;
     }
 
 
     private ExtentSparkReporter getSparkReporter() {
-        //filePath=filePath.replace("extentreport.html","extentreport_"+reportName+".html");
-        //flushReportingDirectory();
         sparkReporter = new ExtentSparkReporter(newFilePath);
-
-        // make the charts visible on report open
-        //htmlReporter.config().setChartVisibilityOnOpen(true);
-
         sparkReporter.config().setDocumentTitle("RED automation report");
         sparkReporter.config().setReportName("Regression cycle");
         sparkReporter.config().enableTimeline(true);
         sparkReporter.config().setProtocol(Protocol.HTTP);
         sparkReporter.config().setTheme(Theme.DARK);
-        //htmlReporter.setAppendExisting(true);
         return sparkReporter;
     }
 

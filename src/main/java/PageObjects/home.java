@@ -3,8 +3,10 @@ package PageObjects;
 import Services.Global;
 import org.openqa.selenium.WebElement;
 
-public class productDetail extends basePage{
-    public productDetail(Global global) {
+import java.util.Locale;
+
+public class home extends basePage{
+    public home(Global global) {
         super(global);
     }
 
@@ -13,15 +15,13 @@ public class productDetail extends basePage{
      * OBJECT REPOSITORY
      */
 //----------------------------------------------------------------------------------------------------------------------
-
     /**
-     * about this item heading
+     * sign IN Button
      * @return Selenium WebElement
      */
-    private WebElement aboutThisItem(){
-        return utils.getElement(_global._driver, "//h1[contains(@class,'a-size-base-plus')]","xpath");
+    private WebElement signIn(){
+        return utils.getElement(_global._driver, "//a[@class='a-button-text']","xpath");
     }
-
 
 //----------------------------------------------------------------------------------------------------------------------
     /*
@@ -30,15 +30,12 @@ public class productDetail extends basePage{
 //----------------------------------------------------------------------------------------------------------------------
 
     /**
-     * verify About This Item is displayed
+     * verify that home page is opened and displayed
      */
-    public productDetail verifyAboutThisItemHeading(int step, String data){
-        utils.vWait(2000);
-        utils.logStep(step,"Assert that "+data+" section is present .");
-        utils.verifyObjText(aboutThisItem(),"About This Item",data,data+" is Displayed");
+    public home verifyHomePageDisplayed(int step){
+        utils.vWait(500);
+        utils.logStep(step,"Verify Homepage is displayed.");
+        utils.verifyObjDisplayed(signIn(),"Sign In Button On Homepage");
         return this;
     }
 }
-
-
-

@@ -41,8 +41,9 @@ public class results extends basePage{
     /**
      * Check any object on filter slidebar
      */
-    public results setSortFilter(String data){
+    public results setSortFilter(int step, String data){
         utils.vWait(2000);
+        utils.logStep(step,"Sort the results with "+data+".");
         utils.actionOnElement(sort(),"Sort Filter","select", data);
         return this;
     }
@@ -50,10 +51,11 @@ public class results extends basePage{
     /**
      * listing of all prices present on first pagination
      */
-    public results clickResultItem(int optToClick) {
+    public results clickResultItem(int step, int optToClick, String highestNumber) {
         utils.vWait(2000);
-        utils.actionOnElement(price().get(optToClick), "Price: ","click", null);
-        utils.logInfo(null, "<b>Tab: </b> Clicked on item in the highest proce list: " + optToClick+1);
+        utils.logStep(step,"Click on the "+highestNumber+" highest priced item.");
+        String priceValue = price().get(optToClick).getText().toString();
+        utils.actionOnElement(price().get(optToClick), highestNumber+" Highest Price: "+priceValue,"click", null);
         return this;
         }
 }

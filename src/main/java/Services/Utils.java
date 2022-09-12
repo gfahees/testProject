@@ -91,6 +91,7 @@ public class Utils {
     }
 
     /**
+     * This function is used to get list of web elements
      * @param _driver
      * @param value
      * @param locatorType
@@ -135,6 +136,12 @@ public class Utils {
         }
     }
 
+    /**
+     * This function is used to set checkbox value
+     * @param webElement
+     * @param name
+     * @param data
+     */
     public void setCheckBox(WebElement webElement, String name, boolean data) {
         if (webElement != null) {
             if (webElement.getAttribute("checked") == null) {
@@ -157,43 +164,71 @@ public class Utils {
 
     /**
      * Function for verification on Selenium elements using attribute
+     * @param webElement
+     * @param name
+     * @param data
+     * @param passLog
      */
-    public void verifyObjText(WebElement obj, String name, String data, String passLog) {
-        if (obj != null) {
+    public void verifyObjText(WebElement webElement, String name, String data, String passLog) {
+        if (webElement != null) {
             JavascriptExecutor jse = (JavascriptExecutor) _global._driver;
-            jse.executeScript("arguments[0].scrollIntoView()", obj);
+            jse.executeScript("arguments[0].scrollIntoView()", webElement);
             //softAssertion.assertEquals(obj.getAttribute(attribute).trim(), data.trim());
-            if (obj.getText().trim().contains(data)) {
-                logPass(obj, "<b>Object: </b>" + name + "<br /><b>Verification: </b>" + data.trim());
+            if (webElement.getText().trim().contains(data)) {
+                logPass(webElement, "<b>Object: </b>" + name + "<br /><b>Verification: </b>" + data.trim());
             } else {
-                logFail(obj, "<b>Object: </b>" + name + "<br /><b>Expected: </b>" + data.trim() + "<br /><b>Actual: </b>" + obj.getText().trim());
+                logFail(webElement, "<b>Object: </b>" + name + "<br /><b>Expected: </b>" + data.trim() + "<br /><b>Actual: </b>" + webElement.getText().trim());
             }
         }
     }
 
     /**
      * Function for verification on Selenium elements using attribute
+     * @param webElement
+     * @param name
+     * @param attribute
+     * @param data
+     * @param passLog
      */
-    public void verifyObjAttribute(WebElement obj, String name, String attribute, String data, String passLog) {
-        if (obj != null) {
+    public void verifyObjAttribute(WebElement webElement, String name, String attribute, String data, String passLog) {
+        if (webElement != null) {
             JavascriptExecutor jse = (JavascriptExecutor) _global._driver;
-            jse.executeScript("arguments[0].scrollIntoView()", obj);
-            // _global.softAssertion.assertEquals(obj.getAttribute(attribute).trim(), data.trim());
-            if (obj.getAttribute(attribute).trim().contains(data)) {
-                logPass(obj, "<b>Object: </b>" + name + "<br /><b>Verification: </b>" + data.trim());
+            jse.executeScript("arguments[0].scrollIntoView()", webElement);
+            if (webElement.getAttribute(attribute).trim().contains(data)) {
+                logPass(webElement, "<b>Object: </b>" + name + "<br /><b>Verification: </b>" + passLog);
             } else {
-                logFail(obj, "<b>Object: </b>" + name + "<br /><b>Expected: </b>" + data.trim() + "<br /><b>Actual: </b>" + obj.getText().trim());
+                logFail(webElement, "<b>Object: </b>" + name + "<br /><b>Expected: </b>" + data.trim() + "<br /><b>Actual: </b>" + webElement.getText().trim());
             }
         }
     }
 
-    public void specificTab(int tabNumber) {
+    /**
+     * Function for verification on Selenium elements displayed
+     */
+    public void verifyObjDisplayed(WebElement webElement, String name) {
+        if (webElement != null) {
+            if (webElement.isDisplayed()) {
+                logPass(webElement, "<b>Object: </b>" + name + "<br /><b>Verification: </b>" + "Displayed");
+            } else {
+                logFail(webElement, "<b>Object: </b>" + name + "<br /><b>Expected: </b>" + "Displayed"+ "<br /><b>Actual: </b>" + "Not Displayed");
+            }
+        }
+    }
+
+    /**
+     * This function is used to switch to user defined tab in browser
+     * @param step
+     * @param tabNumber
+     */
+
+    public void specificTab(int step, int tabNumber) {
         try {
+            logStep(step,"Switch the Window.");
             ArrayList<String> tab = new ArrayList<>(_global._driver.getWindowHandles());
             _global._driver.switchTo().window(tab.get(tabNumber));
             logInfo(null, "<b>Tab: </b>" + tabNumber + " Switched");
         } catch (IndexOutOfBoundsException e) {
-            //    _global.CF.logInfo(null, "<b>Tab</b>" +" Not Available");
+            logInfo(null, "<b>Tab</b>" +" Not Available");
         }
     }
 
@@ -206,6 +241,7 @@ public class Utils {
     }
 
     /**
+     * This function highlight element
      * @param driver
      * @param weElement
      */
@@ -217,32 +253,73 @@ public class Utils {
     }
 
 
-    public void logInfo(WebElement Obj, String description) {
+    //****************************************************************************************************************************************************************************//
+    //******************************************************************  Log Functions   ****************************************************************************************//
+    //****************************************************************************************************************************************************************************//
+
+    /**
+     * This function is designed to log info
+     * @param webElement
+     * @param description
+     */
+
+    public void logInfo(WebElement webElement, String description) {
         _global.test.log(Status.INFO, description);
         _global.logger.info(_global.suiteName + " | " + "ACTION: " + description.replace("<b>", "").replace("</b>", "").replace("<br />", "\r\n"));
         System.out.println(_global.suiteName + " | " + "ACTION: " + description.replace("<b>", "").replace("</b>", "").replace("<br />", "\r\n"));
     }
 
-    public void logPass(WebElement Obj, String description) {
-        _global.test.pass(description);
+    /**
+     * This function is used for logging pass value
+     * @param webElement
+     * @param description
+     */
+    public void logPass(WebElement webElement, String description) {
+        //_global.test.pass(description);
+        logWithScreenshot(webElement, description, "PASS");
         _global.logger.info(_global.suiteName + " | " + "PASS: " + description.replace("<b>", "").replace("</b>", "").replace("<br />", "\r\n"));
         System.out.println(_global.suiteName + " | " + "PASS: " + description.replace("<b>", "").replace("</b>", "").replace("<br />", "\r\n"));
     }
 
-    public void logFail(WebElement Obj, String description) {
-        logWithScreenshot(Obj, description, "FAIL");
+    /**
+     * This function is design to log fail in report
+     * @param webElement
+     * @param description
+     */
+    public void logFail(WebElement webElement, String description) {
+        logWithScreenshot(webElement, description, "FAIL");
         _global.logger.info(_global.suiteName + " | " + "FAIL: " + description.replace("<b>", "").replace("</b>", "").replace("<br />", "\r\n"));
         System.out.println(_global.suiteName + " | " + "FAIL: " + description.replace("<b>", "").replace("</b>", "").replace("<br />", "\r\n"));
 
     }
 
+    /**
+     * This function is used to attach step info in report
+     * @param step
+     * @param description
+     */
+    public void logStep(int step,String description){
+        _global.test.log(Status.INFO,"***************************************************<br><b>STEP "+step+":</b> "+description+"<br>***************************************************");
+        _global.logger.info(_global.suiteName+" | "+"ACTION: " + description.replace("<b>", "").replace("</b>", "").replace("<br />", "\r\n"));
+        System.out.println(_global.suiteName+" | "+"ACTION: " + description.replace("<b>", "").replace("</b>", "").replace("<br />", "\r\n"));
+    }
 
-    public void logWarning(WebElement Obj, String description) {
+    /**
+     * This function is used to log warning
+     * @param webElement
+     * @param description
+     */
+    public void logWarning(WebElement webElement, String description) {
         _global.test.log(Status.WARNING, description);
         _global.logger.info(_global.suiteName + " | " + "WARNING: " + description.replace("<b>", "").replace("</b>", "").replace("<br />", "\r\n"));
 
     }
 
+    /**
+     * This issue is used to log errors
+     * @param iTestResult
+     * @param description
+     */
     public void logError(ITestResult iTestResult, String description) {
 
         if (iTestResult != null) {
@@ -256,22 +333,17 @@ public class Utils {
 
     }
 
-    public void delay(int millisec) {
-
-        _global.logger.info("DELAY: " + "Delaying for " + Double.valueOf(millisec) / 1000 + " seconds");
-        try {
-            Thread.sleep(millisec);
-        } catch (Exception e) {
-            logInfo(null, "Exception - Trying to implement sleep request, CommonFunc.Java|isAlertPresent");
-        }
-
-    }
-
-    public void logWithScreenshot(WebElement Obj, String description, String result) {
+    /**
+     * This function is designed to capture screenshot and attach in report
+     * @param webElement
+     * @param description
+     * @param result
+     */
+    public void logWithScreenshot(WebElement webElement, String description, String result) {
         File source = null;
-        if (Obj != null) {
+        if (webElement != null) {
             if (_global._driver instanceof JavascriptExecutor) {
-                ((JavascriptExecutor) _global._driver).executeScript("arguments[0].style.border='3px solid red'", Obj);
+                ((JavascriptExecutor) _global._driver).executeScript("arguments[0].style.border='3px solid red'", webElement);
             }
         }
         try {
@@ -283,9 +355,9 @@ public class Utils {
         }
 
 
-        if (Obj != null) {
+        if (webElement != null) {
             if (_global._driver instanceof JavascriptExecutor) {
-                ((JavascriptExecutor) _global._driver).executeScript("arguments[0].style.border=''", Obj);
+                ((JavascriptExecutor) _global._driver).executeScript("arguments[0].style.border=''", webElement);
             }
         }
 

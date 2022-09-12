@@ -38,7 +38,8 @@ public class mainNavigation extends basePage{
     /**
      * Click any object displayed on Main Navigation bar except hamburger menu
      */
-    public mainNavigation clickMainNavigationBarElement(String objName){
+    public mainNavigation clickMainNavigationBarElement(int step, String objName){
+        utils.logStep(step,"Click "+objName+" from main navigation bar.");
         utils.actionOnElement(mainNavigationBarElement(objName),"Main Navigation Element: "+objName,"click", null);
         return this;
     }
@@ -46,7 +47,9 @@ public class mainNavigation extends basePage{
     /**
      * Click only on hamburger menu
      */
-    public mainNavigation clickHamburgerMenu(){
+    public mainNavigation clickHamburgerMenu(int step){
+        utils.vWait(2000);
+        utils.logStep(step,"Click hamburger menu from main navigation bar.");
         utils.actionOnElement(hamburgerMenu(),"Hamburger Menu","click", null);
         return this;
     }

@@ -34,8 +34,9 @@ public class filterSlidebar extends basePage{
     /**
      * Check any object on filter slidebar
      */
-    public filterSlidebar clickCheckbox(String parentObjName, String childObjName, Boolean data){
+    public filterSlidebar clickCheckbox(int step, String parentObjName, String childObjName, Boolean data){
         utils.vWait(2000);
+        utils.logStep(step,"Scroll and filter the results by "+parentObjName+" ‘"+childObjName+"’.");
         utils.setCheckBox(checkbox(parentObjName,childObjName),childObjName+" From Section of: "+parentObjName, data);
         return this;
     }

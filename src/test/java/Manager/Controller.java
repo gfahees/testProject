@@ -4,10 +4,6 @@ import PageObjects.*;
 import Services.Global;
 import Services.ReportManager;
 import Services.Utils;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
@@ -18,12 +14,14 @@ public class Controller implements IInvokedMethodListener {
     protected hamburgerMenuSlidebar hamburgerMenuSlidebar = null;
     static protected ReportManager reportManager = null;
     static protected Global _global = new Global();
+    protected televisionStore televisionStore =null;
     protected filterSlidebar filterSlidebar =null;
     protected mainNavigation mainNavigation =null;
     protected productDetail productDetail =null;
     protected results resultsPage = null;
     protected basePage basePage = null;
     protected Utils utils = null;
+    protected home home =null;
 
     @BeforeClass
     public void vPreConfiguration(){
@@ -31,12 +29,14 @@ public class Controller implements IInvokedMethodListener {
         _global._driver.manage().window().maximize();
 
         hamburgerMenuSlidebar = new hamburgerMenuSlidebar(_global);
+        televisionStore = new televisionStore(_global);
         mainNavigation = new mainNavigation(_global);
         filterSlidebar = new filterSlidebar(_global);
         reportManager = new ReportManager(_global);
         productDetail = new productDetail(_global);
         resultsPage = new results(_global);
         basePage = new basePage(_global);
+        home = new home(_global);
         utils = new Utils(_global);
         _global._driver.get(_global.url);
         reportManager.GetExtent();
@@ -46,7 +46,12 @@ public class Controller implements IInvokedMethodListener {
     @AfterTest
     public void vTeardown(){
         _global._driver.close();
-        _global._driver.quit();
+        try{
+            _global._driver.quit();
+            Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe /T");}
+        catch (Exception e){
+            utils.logInfo(null,"Exception - Trying to quit driver after closing, BaseController.Java|Closer");
+        }
         reportManager.vReportObjFlush();
     }
 
