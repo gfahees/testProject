@@ -4,8 +4,10 @@ import PageObjects.*;
 import Services.Global;
 import Services.ReportManager;
 import Services.Utils;
+import org.apache.log4j.PropertyConfigurator;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
@@ -57,7 +59,6 @@ public class Controller implements IInvokedMethodListener {
 
     @Override
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
-
         switch(iInvokedMethod.getTestMethod().getMethodName()){
             case "verify_about_this_item_on_product_detail_page":
                 _global.test = reportManager.createTest("verify_about_this_item_on_product_detail_page", "This test will verify the samsung tv store from test result, and after clicking the second highest price items from the search result it will verify the About this item on detail page");
@@ -65,6 +66,14 @@ public class Controller implements IInvokedMethodListener {
             default:
                 break;
         }
+    }
+    @BeforeClass
+    public void Starter(ITestContext context) {
+        _global= new Global();
+        String log4jConfPath = System.getProperty("user.dir") + "/log4j2.properties";
+        PropertyConfigurator.configure(log4jConfPath);
+        _global.suiteName=context.getSuite().getName();
+
     }
 
     @Override
